@@ -210,12 +210,12 @@
     <div class="container">
         <header>
             <h1>Proposta de Painel de Indicadores de Infraestrutura</h1>
-            <p>Apresentação para o desenvolvimento de um dashboard da GCINFRA.</p>
+            <p>Apresentação para a equipe de Cientistas de Dados para o desenvolvimento de um dashboard de KPIs estratégicos.</p>
         </header>
 
         <div class="highlight-box">
             <h4>🎯 Objetivo Estratégico</h4>
-            <p>Este painel visa fornecer uma visão dos principais indicadores de performance da infraestrutura hospitalar, permitindo tomadas de decisão baseadas em dados e otimização dos processos.</p>
+            <p>Este painel visa fornecer uma visão integrada e em tempo real dos principais indicadores de performance da infraestrutura hospitalar, permitindo tomadas de decisão baseadas em dados e otimização contínua dos processos.</p>
         </div>
 
         <div class="tabs">
@@ -230,19 +230,19 @@
             
             <div class="category-intro">
                 <h4>📋 Estratégia de Implementação</h4>
-                <p>O desenvolvimento será realizado em fases, iniciando pelos indicadores mais críticos da Engenharia Clínica que impactam na continuidade operacional.</p>
+                <p>O desenvolvimento será realizado em fases priorizadas, iniciando pelos indicadores mais críticos da Engenharia Clínica que impactam diretamente na segurança do paciente e continuidade operacional.</p>
             </div>
 
             <h3>🎯 FASE 1 - Indicadores Críticos da Engenharia Clínica (Prioridade ALTA)</h3>
             <div class="highlight-box">
-                <h4>⚡ Indicadores de Segurança e Disponibilidade - Sprint 1 e 2</h4>
+                <h4>⚡ Indicadores de Segurança e Disponibilidade - Sprint 1 e 2 (4 semanas)</h4>
                 <p><strong>Justificativa:</strong> Estes indicadores impactam diretamente na segurança do paciente e na continuidade dos serviços assistenciais.</p>
             </div>
 
             <ul>
                 <li class="indicator-item">
                     <div class="indicator-name">1. Taxa de Disponibilidade de Equipamentos Críticos</div>
-                    <div class="indicator-description"><strong>Fonte de Dados:</strong> API Neovero<br>
+                    <div class="indicator-description"><strong>Fonte de Dados:</strong> Sistema GMAO (Gestão de Manutenção Assistida por Ordenador)<br>
                     <strong>Cálculo:</strong> (Horas Operacionais / Horas Totais) × 100<br>
                     <strong>Atualização:</strong> Tempo real / Dashboard principal</div>
                     <div class="strategic-importance"><strong>Desenvolvimento:</strong> Integração com sistema de manutenção, alertas automáticos para disponibilidade <98%, segmentação por criticidade.</div>
@@ -250,113 +250,145 @@
 
                 <li class="indicator-item">
                     <div class="indicator-name">2. Tempo Médio de Primeiro Atendimento - Equipamentos Críticos</div>
-                    <div class="indicator-description"><strong>Fonte de Dados:</strong> Sistema de chamados técnicos<br>
-                    <strong>Cálculo:</strong> Soma(Tempo até primeiro atendimento) / Número de chamados<br>
-                    <strong>Meta:</strong> < 4 horas para críticos</div>
+                    <div class="indicator-description"><strong>Memorial de Cálculo:</strong> 
+                    Filtrar registros onde prioridade = 'ALTA' e data_atendimento IS NOT NULL:<br>
+                    • Tempo Atendimento = data_atendimento - abertura (em horas)<br>
+                    • TMPA = Soma(Tempos de Atendimento) / Count(Chamados Críticos)<br>
+                    <strong>Colunas:</strong> prioridade, data_atendimento, abertura</div>
                     <div class="strategic-importance"><strong>Desenvolvimento:</strong> Dashboard com semáforo (verde <2h, amarelo 2-4h, vermelho >4h), histórico por período e comparativo por família de equipamentos.</div>
                 </li>
 
                 <li class="indicator-item">
                     <div class="indicator-name">3. Pendências de Manutenção Corretiva por Criticidade</div>
-                    <div class="indicator-description"><strong>Fonte de Dados:</strong> Sistema GMAO<br>
-                    <strong>Visualização:</strong> Gráfico por tempo de abertura (0-24h, 1-7 dias, >7 dias)<br>
-                    <strong>Alertas:</strong> Equipamentos críticos com >24h pendentes</div>
+                    <div class="indicator-description"><strong>Memorial de Cálculo:</strong> 
+                    Filtrar registros onde situacao != 'FECHADA' e tipomanutencao = 'CORRETIVA':<br>
+                    • Tempo Pendente = Data Atual - abertura (em dias)<br>
+                    • Classificar: 0-24h, 1-7 dias, >7 dias<br>
+                    • Agrupar por prioridade (ALTA = Crítico, MÉDIA = Semicrítico, BAIXA = Normal)<br>
+                    <strong>Colunas:</strong> situacao, tipomanutencao, abertura, prioridade</div>
                     <div class="strategic-importance"><strong>Desenvolvimento:</strong> Painel de controle com priorização automática, notificações push para gestores, drill-down por equipamento.</div>
                 </li>
 
                 <li class="indicator-item">
                     <div class="indicator-name">4. Cumprimento de Manutenção Preventiva</div>
-                    <div class="indicator-description"><strong>Fonte de Dados:</strong> Cronograma de manutenção preventiva<br>
-                    <strong>Cálculo:</strong> (MP executadas no prazo / MP programadas) × 100<br>
-                    <strong>Meta:</strong> >95%</div>
+                    <div class="indicator-description"><strong>Memorial de Cálculo:</strong> 
+                    Filtrar registros onde tipomanutencao = 'PREVENTIVA':<br>
+                    • MP no Prazo = Count(*) onde fechamento <= data_solucao planejada<br>
+                    • MP Total Programada = Count(*) total do período<br>
+                    • Taxa = (MP no Prazo / MP Total) × 100<br>
+                    <strong>Colunas:</strong> tipomanutencao, fechamento, data_solucao, situacao</div>
                     <div class="strategic-importance"><strong>Desenvolvimento:</strong> Calendário visual, predição de vencimentos, relatório de tendências e impacto na disponibilidade.</div>
                 </li>
             </ul>
 
             <h3>🔧 FASE 2 - Indicadores de Conformidade e Qualidade (Prioridade ALTA)</h3>
             <div class="highlight-box">
-                <h4>📊 Compliance e Segurança Regulatória - Sprint 3 e 4</h4>
+                <h4>📊 Compliance e Segurança Regulatória - Sprint 3 e 4 (4 semanas)</h4>
                 <p><strong>Justificativa:</strong> Essenciais para conformidade regulatória (ANVISA) e acreditações hospitalares.</p>
             </div>
 
             <ul>
                 <li class="indicator-item">
                     <div class="indicator-name">5. Cumprimento das Calibrações</div>
-                    <div class="indicator-description"><strong>Fonte de Dados:</strong> Sistema de metrologia<br>
-                    <strong>Alertas:</strong> Equipamentos próximos ao vencimento (30, 15, 7 dias)<br>
-                    <strong>Certificações:</strong> Integração com laboratórios credenciados</div>
+                    <div class="indicator-description"><strong>Memorial de Cálculo:</strong> 
+                    Filtrar registros onde servico LIKE '%CALIBR%' ou tipomanutencao = 'CALIBRAÇÃO':<br>
+                    • Calibrações no Prazo = Count(*) onde fechamento <= data_solucao planejada<br>
+                    • Total Programado = Count(*) equipamentos que requerem calibração<br>
+                    • Taxa = (Calibrações no Prazo / Total Programado) × 100<br>
+                    <strong>Colunas:</strong> servico, tipomanutencao, fechamento, data_solucao</div>
                     <div class="strategic-importance"><strong>Desenvolvimento:</strong> Dashboard de vencimentos, histórico de conformidade, integração com fornecedores de calibração.</div>
                 </li>
 
                 <li class="indicator-item">
                     <div class="indicator-name">6. Cumprimento dos Ensaios de Segurança Elétrica</div>
-                    <div class="indicator-description"><strong>Fonte de Dados:</strong> Relatórios de ensaios NBR IEC 60601<br>
-                    <strong>Periodicidade:</strong> Conforme classificação do equipamento<br>
-                    <strong>Não-conformidades:</strong> Rastreamento e planos de ação</div>
+                    <div class="indicator-description"><strong>Memorial de Cálculo:</strong> 
+                    Filtrar registros onde servico LIKE '%SEGURANÇA%ELÉTRICA%' ou servico LIKE '%ENSAIO%':<br>
+                    • Ensaios no Prazo = Count(*) onde fechamento <= data_solucao planejada<br>
+                    • Total Programado = Count(*) equipamentos que requerem ensaio<br>
+                    • Taxa = (Ensaios no Prazo / Total Programado) × 100<br>
+                    <strong>Colunas:</strong> servico, fechamento, data_solucao, equipamento</div>
                     <div class="strategic-importance"><strong>Desenvolvimento:</strong> Mapa de equipamentos por status de segurança, alertas de vencimento, dashboard de não-conformidades.</div>
                 </li>
 
                 <li class="indicator-item">
                     <div class="indicator-name">7. Taxa de Impacto Clínico por Falha de Equipamento</div>
-                    <div class="indicator-description"><strong>Fonte de Dados:</strong> Sistema de chamados + feedback assistencial<br>
-                    <strong>Classificação:</strong> Sem impacto / Adiamento / Cancelamento / Transferência<br>
-                    <strong>Análise:</strong> Por família de equipamento e setor</div>
+                    <div class="indicator-description"><strong>Memorial de Cálculo:</strong> 
+                    Usar campo 'ocorrencia' para classificar impacto (palavras-chave: "suspensão", "adiamento", "cancelamento"):<br>
+                    • Falhas com Impacto = Count(*) onde ocorrencia contém palavras de impacto clínico<br>
+                    • Total de Falhas = Count(*) onde tipomanutencao = 'CORRETIVA'<br>
+                    • Taxa = (Falhas com Impacto / Total de Falhas) × 100<br>
+                    <strong>Colunas:</strong> ocorrencia, tipomanutencao, familia, setor</div>
                     <div class="strategic-importance"><strong>Desenvolvimento:</strong> Matriz de impacto, análise de causa raiz, priorização de ações preventivas baseada em impacto clínico.</div>
                 </li>
             </ul>
 
             <h3>📈 FASE 3 - Indicadores de Performance e Custos (Prioridade MÉDIA)</h3>
             <div class="highlight-box">
-                <h4>💰 Otimização e Eficiência - Sprint 5 e 6 </h4>
+                <h4>💰 Otimização e Eficiência - Sprint 5 e 6 (4 semanas)</h4>
                 <p><strong>Justificativa:</strong> Foco na otimização de custos e melhoria da eficiência operacional.</p>
             </div>
 
             <ul>
                 <li class="indicator-item">
                     <div class="indicator-name">8. MTBF (Tempo Médio entre Falhas)</div>
-                    <div class="indicator-description"><strong>Cálculo:</strong> Horas de operação / Número de falhas<br>
-                    <strong>Análise:</strong> Tendência por família de equipamentos<br>
-                    <strong>Benchmarking:</strong> Comparação com dados do fabricante</div>
+                    <div class="indicator-description"><strong>Memorial de Cálculo:</strong> 
+                    Por equipamento, filtrar tipomanutencao = 'CORRETIVA' e situacao = 'FECHADA':<br>
+                    • Horas de Operação = funcionamento total entre falhas<br>
+                    • Número de Falhas = Count(OS corretivas)<br>
+                    • MTBF = Horas de Operação / Número de Falhas<br>
+                    <strong>Colunas:</strong> equipamento, tipomanutencao, funcionamento, situacao, familia</div>
                     <div class="strategic-importance"><strong>Desenvolvimento:</strong> Análise de confiabilidade, identificação de equipamentos problemáticos, suporte a decisões de substituição.</div>
                 </li>
 
                 <li class="indicator-item">
                     <div class="indicator-name">9. MTTR (Tempo Médio de Reparo)</div>
-                    <div class="indicator-description"><strong>Cálculo:</strong> Soma dos tempos de reparo / Número de reparos<br>
-                    <strong>Segmentação:</strong> Por técnico, tipo de falha, família de equipamento<br>
-                    <strong>Meta:</strong> Redução contínua</div>
+                    <div class="indicator-description"><strong>Memorial de Cálculo:</strong> 
+                    Filtrar tipomanutencao = 'CORRETIVA' e situacao = 'FECHADA':<br>
+                    • Tempo de Reparo = data_solucao - data_atendimento (em horas)<br>
+                    • MTTR = Soma(Tempos de Reparo) / Count(Reparos Concluídos)<br>
+                    • Segmentar por: responsavel, familia, complexidade<br>
+                    <strong>Colunas:</strong> data_solucao, data_atendimento, responsavel, familia, complexidade</div>
                     <div class="strategic-importance"><strong>Desenvolvimento:</strong> Análise de eficiência da equipe técnica, identificação de gargalos, otimização de processos de manutenção.</div>
                 </li>
 
                 <li class="indicator-item">
                     <div class="indicator-name">10. Custo de Manutenção por Equipamento</div>
-                    <div class="indicator-description"><strong>Componentes:</strong> Peças + Mão de obra + Terceirizados<br>
-                    <strong>Análise:</strong> Custo/equipamento vs. valor de aquisição<br>
-                    <strong>Threshold:</strong> Alerta quando custo anual >30% do valor de aquisição</div>
+                    <div class="indicator-description"><strong>Memorial de Cálculo:</strong> 
+                    Por equipamento, somar todos os custos:<br>
+                    • Custo Total = custo_mo + custo_peca + custo_servicoexterno + custo_os<br>
+                    • Custo por Equipamento = Sum(Custo Total) GROUP BY equipamento<br>
+                    • Análise: Custo Anual vs. Valor de Aquisição (se disponível)<br>
+                    <strong>Colunas:</strong> equipamento, custo_mo, custo_peca, custo_servicoexterno, custo_os</div>
                     <div class="strategic-importance"><strong>Desenvolvimento:</strong> Análise de TCO (Total Cost of Ownership), identificação de equipamentos antieconômicos, suporte a decisões de substituição.</div>
                 </li>
             </ul>
 
             <h3>🔄 FASE 4 - Indicadores Avançados e Integração (Prioridade BAIXA)</h3>
             <div class="highlight-box">
-                <h4>🚀 Inovação e Integração - Sprint 7 e 8</h4>
+                <h4>🚀 Inovação e Integração - Sprint 7 e 8 (4 semanas)</h4>
                 <p><strong>Justificativa:</strong> Indicadores avançados para otimização contínua e integração com outros sistemas.</p>
             </div>
 
             <ul>
                 <li class="indicator-item">
                     <div class="indicator-name">11. Percentual de Chamados Improcedentes</div>
-                    <div class="indicator-description"><strong>Análise:</strong> Identificação de necessidades de treinamento<br>
-                    <strong>Categorização:</strong> Erro operacional / Falta de treinamento / Outros<br>
-                    <strong>Meta:</strong> <15%</div>
+                    <div class="indicator-description"><strong>Memorial de Cálculo:</strong> 
+                    Usar campo 'causa' para identificar chamados improcedentes (palavras-chave: "erro operacional", "treinamento", "sem defeito"):<br>
+                    • Chamados Improcedentes = Count(*) onde causa contém palavras de improcedência<br>
+                    • Total Chamados = Count(*) total no período<br>
+                    • Taxa = (Chamados Improcedentes / Total Chamados) × 100<br>
+                    <strong>Colunas:</strong> causa, solicitante, setor, equipamento</div>
                     <div class="strategic-importance"><strong>Desenvolvimento:</strong> Sistema de feedback, programa de treinamento orientado por dados, redução de chamados desnecessários.</div>
                 </li>
 
                 <li class="indicator-item">
                     <div class="indicator-name">12. Índice de Produtividade da Engenharia Clínica</div>
-                    <div class="indicator-description"><strong>Cálculo:</strong> Chamados atendidos por técnico por período<br>
-                    <strong>Variáveis:</strong> Complexidade, deslocamento, disponibilidade<br>
-                    <strong>Benchmarking:</strong> Padrões de mercado</div>
+                    <div class="indicator-description"><strong>Memorial de Cálculo:</strong> 
+                    Por período (mês), calcular por técnico:<br>
+                    • Chamados Atendidos = Count(*) onde responsavel = técnico AND situacao = 'FECHADA'<br>
+                    • Horas Trabalhadas = Sum(qtd_mo_min) / 60<br>
+                    • Produtividade = Chamados Atendidos / Horas Trabalhadas<br>
+                    <strong>Colunas:</strong> responsavel, situacao, qtd_mo_min, complexidade, data_fim_mo</div>
                     <div class="strategic-importance"><strong>Desenvolvimento:</strong> Otimização de recursos humanos, balanceamento de carga de trabalho, identificação de necessidades de capacitação.</div>
                 </li>
             </ul>
@@ -364,26 +396,25 @@
             <h3>📋 CRONOGRAMA DE ENTREGA</h3>
             <ul>
                 <li class="indicator-item">
-                    <div class="indicator-name">Sprint 1-2: MVP - Indicadores Críticos</div>
+                    <div class="indicator-name">Sprint 1-2 (Semanas 1-4): MVP - Indicadores Críticos</div>
                     <div class="indicator-description">Disponibilidade, Tempo de Atendimento, Pendências, MP</div>
                     <div class="strategic-importance"><strong>Entrega:</strong> Dashboard básico funcional com os 4 indicadores prioritários + alertas automáticos.</div>
                 </li>
 
                 <li class="indicator-item">
-                    <div class="indicator-name">Sprint 3-4: Conformidade Regulatória</div>
+                    <div class="indicator-name">Sprint 3-4 (Semanas 5-8): Conformidade Regulatória</div>
                     <div class="indicator-description">Calibrações, Segurança Elétrica, Impacto Clínico</div>
                     <div class="strategic-importance"><strong>Entrega:</strong> Módulo de compliance com alertas de vencimento e rastreamento de não-conformidades.</div>
                 </li>
 
                 <li class="indicator-item">
-                    <div class="indicator-name">Sprint 5-6 
-                        : Performance e Custos</div>
+                    <div class="indicator-name">Sprint 5-6 (Semanas 9-12): Performance e Custos</div>
                     <div class="indicator-description">MTBF, MTTR, Análise de Custos</div>
                     <div class="strategic-importance"><strong>Entrega:</strong> Módulo de análise financeira e performance com suporte a decisões estratégicas.</div>
                 </li>
 
                 <li class="indicator-item">
-                    <div class="indicator-name">Sprint 7-8: Otimização e Integração</div>
+                    <div class="indicator-name">Sprint 7-8 (Semanas 13-16): Otimização e Integração</div>
                     <div class="indicator-description">Chamados Improcedentes, Produtividade, Integrações</div>
                     <div class="strategic-importance"><strong>Entrega:</strong> Sistema completo com análises avançadas, predições e integração com outros sistemas hospitalares.</div>
                 </li>
@@ -652,7 +683,7 @@
         </div>
         
         <footer>
-            <p><strong>Proposta elaborada por:</strong>pela Equipe GCINFRA<br>
+            <p><strong>Proposta elaborada por:</strong> Jamile Ferino e Equipe de Infraestrutura<br>
             <em>Documento técnico para implementação de dashboard estratégico de KPIs</em></p>
         </footer>
 
@@ -686,5 +717,3 @@
 
 </body>
 </html>
-
-
