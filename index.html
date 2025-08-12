@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proposta de Painel de Indicadores</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+
+        :root {
+            --primary-color: #008080;
+            --secondary-color: #f4f4f4;
+            --font-color: #333;
+            --border-color: #ddd;
+            --header-bg: #2c3e50;
+            --accent-color: #e74c3c;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--secondary-color);
+            color: var(--font-color);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            background: #fff;
+            padding: 25px 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            color: var(--header-bg);
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        header p {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid var(--border-color);
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .tab-link {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 16px;
+            font-weight: 500;
+            color: #555;
+            transition: color 0.3s ease, border-bottom 0.3s ease;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+        }
+
+        .tab-link.active {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+            font-weight: 700;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        
+        h3 {
+            color: #444;
+            font-size: 1.1em;
+            margin-top: 25px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .indicator-item {
+            background: #f9f9f9;
+            margin-bottom: 15px;
+            padding: 15px;
+            border-left: 4px solid var(--primary-color);
+            border-radius: 8px;
+            font-size: 0.95em;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .indicator-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .indicator-name {
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+            font-size: 1.05em;
+        }
+
+        .indicator-description {
+            color: #555;
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        .strategic-importance {
+            background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            border-left: 3px solid var(--warning-color);
+        }
+
+        .strategic-importance strong {
+            color: var(--warning-color);
+        }
+
+        .category-intro {
+            background: linear-gradient(135deg, #e8f5e8, #f0f8ff);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border-left: 5px solid var(--success-color);
+        }
+
+        .category-intro h4 {
+            color: var(--success-color);
+            margin-top: 0;
+            font-size: 1.1em;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            color: #777;
+        }
+
+        .highlight-box {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .highlight-box h4 {
+            color: #856404;
+            margin-top: 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 25px;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab-link {
+                border-bottom: none;
+                border-left: 3px solid transparent;
+                text-align: left;
+            }
+            
+            .tab-link.active {
+                border-left: 3px solid var(--primary-color);
+                border-bottom: none;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Proposta de Painel de Indicadores de Infraestrutura</h1>
+            <p>Apresentação para a equipe de Cientistas de Dados para o desenvolvimento de um dashboard de KPIs estratégicos.</p>
+        </header>
+
+        <div class="highlight-box">
+            <h4>🎯 Objetivo Estratégico</h4>
+            <p>Este painel visa fornecer uma visão integrada e em tempo real dos principais indicadores de performance da infraestrutura hospitalar, permitindo tomadas de decisão baseadas em dados e otimização contínua dos processos.</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-link active" onclick="openTab(event, 'clinica')">Engenharia Clínica</button>
+            <button class="tab-link" onclick="openTab(event, 'predial')">Manutenção Predial</button>
+            <button class="tab-link" onclick="openTab(event, 'nao-medicos')">Equipamentos Não Médicos</button>
+        </div>
+
+        <div id="clinica" class="tab-content active">
+            <h2>Indicadores para Engenharia Clínica</h2>
+            
+            <div class="category-intro">
+                <h4>🏥 Missão Crítica</h4>
+                <p>A Engenharia Clínica é responsável pela segurança, disponibilidade e eficiência dos equipamentos médicos, impactando diretamente na qualidade do atendimento aos pacientes e na continuidade operacional do hospital.</p>
+            </div>
+            
+            <h3>Indicadores Gerais</h3>
+            <ul>
+                <li class="indicator-item">
+                    <div class="indicator-name">Cumprimento de Manutenção Preventiva</div>
+                    <div class="indicator-description">Percentual de manutenções preventivas executadas dentro do prazo planejado em relação ao total programado.</div>
+                    <div class="strategic-importance"><strong>Importância Estratégica:</strong> Previne falhas críticas, reduz custos de manutenção corretiva e garante conformidade regulatória. Meta típica: >95%.</div>
+                </li>
+
+                <li class="indicator-item">
+                    <div class="indicator-name">Cumprimento das Calibrações</div>
+                    <div class="indicator-description">Percentual de equipamentos calibrados dentro dos prazos estabelecidos pelos fabricantes e normas técnicas.</div>
+                    <div class="strategic-importance"><strong>Importância Estratégica:</strong> Essencial para precisão diagnóstica, segurança do paciente e conformidade com auditorias regulatórias (ANVISA, INMETRO).</div>
+                </li>
+
+                <li class="indicator-item">
+                    <div class="indicator-name">Cumprimento das Qualificações</div>
+                    <div class="indicator-description">Percentual de equipamentos qualificados conforme procedimentos de instalação, operação e performance (IQ/OQ/PQ).</div>
+                    <div class="strategic-importance"><strong>Importância Estratégica:</strong> Valida que equipamentos operam conforme especificações, garantindo qualidade dos resultados e conformidade regulatória.</div>
+                </li>
+
+                <li class="indicator-item">
+                    <div class="indicator-name">Cumprimento dos Ensaios de Segurança Elétrica</div>
+                    <div class="indicator-description">Percentual de equipamentos testados para segurança elétrica dentro dos prazos estabelecidos pelas normas (NBR IEC 60601).</div>
+                    <div class="strategic-importance"><strong>Importância Estratégica:</strong> Previne acidentes elétricos com pacientes e operadores, reduz riscos de responsabilidade civil e garante conformidade normativa.</div>
+                </li>
+
+                <li class="indicator-item">
+                    <div class="indicator-name">Tempo Médio entre Falhas - MTBF</div>
+                    <div class="indicator-description">Tempo médio de funcionamento de equipamentos entre falhas consecutivas, medido em horas ou dias.</div>
+                    <div class="strategic-importance"><strong>Importância Estratégica:</strong> Indica confiabilidade do parque tecnológico, orienta decisões de substituição e planejamento de investimentos.</div>
+                </li>
+
+                <li class="indicator-item">
+                    <div class="indicator-name">Taxa de Disponibilidade / Disponibilidade de Críticos</div>
+                    <div class="indicator-description">Percentual de tempo que equipamentos estão operacionais e disponíveis para uso clínico, com foco especial em equipamentos críticos.</div>
+                    <div class="strategic-importance"><strong>Importância Estratégica:</strong> Impacta diretamente na capacidade de atendimento, receita hospitalar e satisfação dos usuários. Meta típica: >98% para críticos.</div>
+                </li>
+
+                <li class="indicator-item">
+                    <div class="indicator-name">Tempo Médio de Atendimento</div>
+                    <div class="indicator-description">Tempo decorrido entre a abertura de um chamado e o início do atendimento pela equipe técnica.</div>
+                    <div class="strategic-importance"><strong>Importância Estratégica:</strong> Minimiza impacto na operação assistencial, melhora satisfação dos usuários e otimiza produtividade da equipe técnica.</div>
+                </li>
+
+                <li class="indicator-item">
+                    <div class="indicator-name">Tempo Médio de Reparo - MTTR</div>
+                    <div class="indicator-description">Tempo médio necessário para reparar um equipamento após a ocorrência de uma falha.</div>
+                    <div class="strategic-importance"><strong>Importância Estratégica:</strong> Indica eficiência da equipe técnica, qualidade dos processos de manutenção e impacto na disponibilidade operacional.</div>
+                </li>
+
+                <li class="indicator-item">
+                    <div class="indicator-name">Taxa de Efetividade do Plano de Investimento</div>
+                    <div class="indicator-description">Percentual de investimentos planejados que foram efetivamente autorizados e executados no período.</div>
+                    <div class="strategic-importance"><strong>Importância Estratégica:</strong> Avalia alinhamento entre planejamento estratégico e execução, impactando modernização tecnológica e competitividade.</div>
+                </li>
+
+                <li class="indicator-item">
+                    <div class="indicator-name">Índice de Produtividade da Engenharia Clínica</div>
+                    <div class="indicator-description">Relação entre número de serviços executados e recursos humanos alocados (chamados atendidos/técnico/período).</div>
+                    <div class="strategic-importance"><strong>Importância Estratégica:</strong> Otimiza dimensionamento de equipe, identifica necessidades de capacitação e melhora eficiência operacional.</div>
+                </li>
+
+                <li class="indicator-item">
+                    <div class="indicator-name">Custo de Manutenção por Equipamento</div>
+                    <div class="indicator-description">Custo médio de manutenção (preventiva + corretiva) por equipamento ou por família de equipamentos.</div>
+                    <div class="strategic-importance"><strong>Importância Estratégica:</strong> Identifica equipamentos com alto custo de manutenção, orienta decisões de substituição e otimiza orçamento.</div>
+                </li>
+
+                <li class="indicator-item">
+                    <div class="indicator-name">Custo de Parada por Falha de Equipamento</div>
+                    <div class="indicator-description">Impacto financeiro estimado quando equipamentos críticos ficam indisponíveis por falhas.</div>
+                    <div class="strategic-importance"><strong>Importância Estratégica:</strong> Quantifica perdas operacionais, justifica investimentos em redundância e prioriza ações preventivas.</div>
+                </li>
+
+                <li class="indicator-item">
+                    <div class="indicator-name">Taxa de Impacto Clínico por Falha de Equipamento</div>
+                    <div class="indicator-description">Percentual de falhas que resultaram em impacto direto no atendimento ao paciente (adiamentos, transferências, etc.).</div>
+                    <div class="strategic-importance"><strong>Importância Estratégica:</strong> Prioriza ações preventivas baseadas no impacto assistencial, melhorando qualidade e segurança do atendimento.</div>
+                </li>
+
+                <li class="indicator-item">
+                    <div class="indicator-name">Percentual de Chamados Improcedentes</div>
+                    <div class="indicator-description">Percentual de chamados que não representavam falhas reais do equipamento (erro de operação, falta de treinamento, etc.).</div>
+                    <div class="strategic-importance"><strong>Importância Estratégica:</strong> Identifica necessidades de treinamento, otimiza recursos técnicos e melhora eficiência operacional.</div>
+                </li>
+            </ul>
+
+            <h3>Indicadores do POP 026</h3>
+            <ul>
+                <li class="indicator-item">
+                    <div class="indicator-name">Atendimento de Manutenções Corretivas</div>
+                    <div class="indicator-description">Número total de manutenções corretivas atendidas no período, segmentado por criticidade e família de equipamentos.</div>
+                    <div class="strategic-importance"><strong>Importância Estratégica:</strong> Monitora demanda corretiva, identifica equipamentos problemáticos e planeja recursos técnicos.</div>
+                </li>
+
+                <li class="indicator-item">
+                    <div class="indicator-name">Pendências de Manutenção Corretiva</div>
+                    <div class="indicator-description">Número de chamados corretivos em aberto, classificados por tempo de abertura e criticidade.</div>
+                    <div class="strategic-importance"><strong>Importância Estratégica:</strong> Evita acúmulo de pendências, identifica gargalos operacionais e prioriza recursos críticos.</div>
+                </li>
+
+                <li class="indicator-item">
+                    <div class="indicator-name">Tempo Médio de Primeiro Atendimento de Equipamentos Críticos</div>
+                    <div class="indicator-description">Tempo decorrido entre abertura do chamado e início do atendimento para equipamentos classificados como críticos.</div>
+                    <div class="strategic-importance"><strong>Importância Estratégica:</strong> Garante priorização adequada de equipamentos críticos, minimizando impacto assistencial. Meta típica: <4h.</div>
+                </li>
+
+                <li class="indicator-item">
+                    <div class="indicator-name">Tempo Médio Parados por Família Crítica</div>
+                    <div class="indicator-description">Tempo médio que equipamentos críticos permanecem indisponíveis, segmentado por família tecnológica.</div>
+                    <div class="strategic-importance"><strong>Importância Estratégica:</strong> Identifica famílias de equipamentos com maior impacto operacional, orientando investimentos e estratégias de manutenção.</div>
+                </li>
+            </ul>
+        </div>
+
+        <div id="predial" class="tab-content">
+            <h2>Indicadores para Manutenção Predial</h2>
+            
+            <div class="category-intro">
+                <h4>🏗️ Base Operacional</h4>
+                <p>A Manutenção Predial sustenta todas as operações hospitalares, garantindo condições ambientais adequadas, segurança estrutural e eficiência energética para o funcionamento contínuo da instituição.</p>
+            </div>
+            
+            <ul>
+                <li class="indicator-item">
+                    <div class="indicator-name">Taxa de Efetividade do Plano de Investimento</div>
+                    <div class="indicator-description">Relação entre investimentos planejados e efetivamente autorizados/executados em infraestrutura predial.</div>
+                    <div class="strategic-importance"><strong>Importância Estratégica:</strong> Assegura modernização contínua da infraestrutura, melhora eficiência operacional e reduz custos de manutenção a longo prazo.</div>
+                </li>
+
+                <li class="indicator-item">
+                    <div class="indicator-name">Análise Crítica da Medição</div>
+                    <div class="indicator-description">Avaliação sistemática dos consumos de utilidades (energia, água, gases medicinais) versus benchmarks e metas estabelecidas.</div>
+                    <div class="strategic-importance"><strong>Importância Estratégica:</strong> Identifica oportunidades de eficiência energética, reduz custos operacionais e apoia sustentabilidade ambiental.</div>
+                </li>
+
+                <li class="indicator-item">
+                    <div class="indicator-name">Cumprimento de Inspeção Predial</div>
+                    <div class="indicator-description">Percentual de inspeções prediais executadas conforme cronograma estabelecido (elevadores, ar condicionado, elétrica, hidráulica, etc.).</div>
+                    <div class="strategic-importance"><strong>Importância Estratégica:</strong> Previne falhas catastróficas, garante conformidade regulatória e reduz riscos de segurança para usuários.</div>
+                </li>
+
+                <li class="indicator-item">
+                    <div class="indicator-name">Taxa de Conformidade das Inspeções Prediais</div>
+                    <div class="indicator-description">Percentual de inspeções que resultaram em status "conforme" sem necessidade de ações corretivas imediatas.</div>
+                    <div class="strategic-importance"><strong>Importância Estratégica:</strong> Indica qualidade da manutenção preventiva, eficácia dos processos e nível de risco da infraestrutura.</div>
+                </li>
+
+                <li class="indicator-item">
+                    <div class="indicator-name">Backlog de Manutenção</div>
+                    <div class="indicator-description">Volume de serviços de manutenção pendentes, expresso em horas de trabalho ou valor financeiro acumulado.</div>
+                    <div class="strategic-importance"><strong>Importância Estratégica:</strong> Previne deterioração acelerada da infraestrutura, otimiza dimensionamento de equipe e prioriza investimentos.</div>
+                </li>
+
+                <li class="indicator-item">
+                    <div class="indicator-name">Custo da Indisponibilidade Operacional Hospitalar</div>
+                    <div class="indicator-description">Impacto financeiro estimado quando falhas de infraestrutura afetam operações assistenciais (suspensão de cirurgias, transferência de pacientes, etc.).</div>
+                    <div class="strategic-importance"><strong>Importância Estratégica:</strong> Quantifica importância crítica da infraestrutura, justifica investimentos preventivos e prioriza ações de manutenção.</div>
+                </li>
+
+                <li class="indicator-item">
+                    <div class="indicator-name">Custo de Manutenção por m²</div>
+                    <div class="indicator-description">Custo total de manutenção predial dividido pela área construída do hospital, permitindo benchmarking.</div>
+                    <div class="strategic-importance"><strong>Importância Estratégica:</strong> Permite comparação com padrões de mercado, otimiza orçamento e identifica oportunidades de melhoria de eficiência.</div>
+                </li>
+
+                <li class="indicator-item">
+                    <div class="indicator-name">Taxa de Retrabalho</div>
+                    <div class="indicator-description">Percentual de serviços de manutenção que precisaram ser refeitos dentro de um período determinado.</div>
+                    <div class="strategic-importance"><strong>Importância Estratégica:</strong> Avalia qualidade dos serviços, identifica necessidades de capacitação e otimiza custos operacionais.</div>
+                </li>
+
+                <li class="indicator-item">
+                    <div class="indicator-name">Índice de Satisfação dos Usuários com a Infraestrutura</div>
+                    <div class="indicator-description">Avaliação da satisfação dos usuários internos (funcionários, médicos) com as condições de infraestrutura através de pesquisas periódicas.</div>
+                    <div class="strategic-importance"><strong>Importância Estratégica:</strong> Melhora ambiente de trabalho, aumenta produtividade das equipes e reduz rotatividade de profissionais.</div>
+                </li>
+            </ul>
+        </div>
+
+        <div id="nao-medicos" class="tab-content">
+            <h2>Indicadores para Equipamentos Não Médicos</h2>
+            
+            <div class="category-intro">
+                <h4>⚙️ Suporte Operacional</h4>
+                <p>Os equipamentos não médicos são fundamentais para o suporte às operações hospitalares, incluindo sistemas de informação, equipamentos de lavanderia, cozinha, segurança e demais sistemas de apoio.</p>
+            </div>
+            
+            <ul>
+                <li class="indicator-item">
+                    <div class="indicator-name">Taxa de Efetividade do Plano de Investimento</div>
+                    <div class="indicator-description">Percentual de investimentos planejados em equipamentos não médicos que foram efetivamente autorizados e executados.</div>
+                    <div class="strategic-importance"><strong>Importância Estratégica:</strong> Garante modernização dos sistemas de suporte, melhora eficiência operacional e reduz custos indiretos.</div>
+                </li>
+
+                <li class="indicator-item">
+                    <div class="indicator-name">Taxa de Cumprimento de Planos de Ação</div>
+                    <div class="indicator-description">Percentual de ações corretivas e preventivas planejadas que foram executadas dentro dos prazos estabelecidos.</div>
+                    <div class="strategic-importance"><strong>Importância Estratégica:</strong> Assegura execução de melhorias identificadas, previne recorrência de problemas e demonstra eficácia da gestão.</div>
+                </li>
+
+                <li class="indicator-item">
+                    <div class="indicator-name">Taxa de Disponibilidade</div>
+                    <div class="indicator-description">Percentual de tempo que equipamentos não médicos estão operacionais e disponíveis para suas funções de suporte.</div>
+                    <div class="strategic-importance"><strong>Importância Estratégica:</strong> Garante continuidade dos processos de suporte, evita impactos indiretos na assistência e otimiza produtividade operacional.</div>
+                </li>
+
+                <li class="indicator-item">
+                    <div class="indicator-name">Tempo Médio entre Falhas - MTBF</div>
+                    <div class="indicator-description">Confiabilidade dos equipamentos não médicos medida pelo tempo médio entre falhas consecutivas.</div>
+                    <div class="strategic-importance"><strong>Importância Estratégica:</strong> Orienta estratégias de manutenção preventiva, planeja substituições e otimiza investimentos em equipamentos de suporte.</div>
+                </li>
+
+                <li class="indicator-item">
+                    <div class="indicator-name">Custo de Parada por Falha de Equipamento</div>
+                    <div class="indicator-description">Impacto financeiro quando falhas em equipamentos não médicos afetam processos de suporte (TI, lavanderia, cozinha, etc.).</div>
+                    <div class="strategic-importance"><strong>Importância Estratégica:</strong> Quantifica importância dos sistemas de suporte, justifica investimentos em redundância e prioriza manutenções preventivas.</div>
+                </li>
+
+                <li class="indicator-item">
+                    <div class="indicator-name">Taxa de Impacto Clínico por Falha de Equipamento</div>
+                    <div class="indicator-description">Percentual de falhas em equipamentos não médicos que geraram impacto indireto na assistência ao paciente.</div>
+                    <div class="strategic-importance"><strong>Importância Estratégica:</strong> Identifica equipamentos de suporte críticos para a operação assistencial, priorizando ações preventivas e investimentos.</div>
+                </li>
+            </ul>
+        </div>
+        
+        <footer>
+            <p><strong>Proposta elaborada por:</strong> Jamile Ferino e Equipe de Infraestrutura<br>
+            <em>Documento técnico para implementação de dashboard estratégico de KPIs</em></p>
+        </footer>
+
+    </div>
+
+    <script>
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+                tabcontent[i].classList.remove("active");
+            }
+
+            tablinks = document.getElementsByClassName("tab-link");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+
+            document.getElementById(tabName).style.display = "block";
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
+        // Adicionar funcionalidade de busca (opcional)
+        function searchIndicators() {
+            // Implementação futura para busca de indicadores
+            console.log("Funcionalidade de busca a ser implementada");
+        }
+    </script>
+
+</body>
+</html>
