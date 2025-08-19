@@ -291,12 +291,21 @@
             <ul>
                 <li class="indicator-item">
                     <div class="indicator-name">1. Taxa de Disponibilidade de Equipamentos Críticos</div>
-                    <div class="indicator-description"><strong>Fonte de Dados:</strong> Sistema Neovero<br>
-                    <strong>Memorial de Cálculo:</strong> (Horas Operacionais / Horas Totais) × 100<br>
-                    <strong>Horas Paradas =  fechamento - abertura (quando tipomanutencao =  CORRETIVA)<br>
-                    <strong>Horas Totais =  Quantidade de dias x 24<br>    
-                    <strong>Horas Operacionais = Horas Totais - Horas Paradas <br>
-                    <strong>Atualização:</strong> Tempo real / Dashboard principal</div>
+                    <div class="indicator-description">
+                        <strong>Fonte de Dados:</strong> Sistema Neovero<br>
+                        <strong>Atualização:</strong> Tempo real / Dashboard principal
+                    </div>
+                    <div class="calculation-box">
+                        <div class="formula-main">
+                            Disponibilidade (%) = (<sup>HorasOperacionais</sup> &frasl; <sub>HorasTotais</sub>) &times; 100
+                        </div>
+                        <p><strong>Onde:</strong></p>
+                        <ul class="definitions-list">
+                            <li><code>HorasOperacionais = HorasTotais - HorasParadas</code></li>
+                            <li><code>HorasTotais = (Qtd. Dias no Período) * 24</code></li>
+                            <li><code>HorasParadas = &Sigma; (fechamento - abertura) | tipomanutencao = 'CORRETIVA'</code></li>
+                        </ul>
+                    </div>
                     <div class="strategic-importance"><strong>Desenvolvimento:</strong> Integração com sistema de manutenção, alertas automáticos para disponibilidade <98%, segmentação por criticidade.</div>
                 </li>
 
@@ -769,6 +778,7 @@
 
 </body>
 </html>
+
 
 
 
