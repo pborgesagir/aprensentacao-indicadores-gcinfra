@@ -331,27 +331,23 @@
 
 
                 <li class="indicator-item">
-                    <div class="indicator-name">3. Pendências de Manutenção Corretiva por Criticidade</div>
+                    <div class="indicator-name">3. Tempo Médio de Primeiro Atendimento</div>
                     <div class="indicator-description">
-                        <strong>Colunas:</strong> situacao, tipomanutencao, abertura, prioridade
+                        <strong>Colunas:</strong> situacao, tipomanutencao, abertura, data_atendimento, prioridade
                     </div>
                     <div class="calculation-box">
-                        <h4>Lógica de Cálculo</h4>
-                        <p><strong>Objetivo:</strong> Contar as Ordens de Serviço (OS) corretivas abertas, agrupadas por criticidade e tempo em aberto.</p>
+                        <div class="formula-main">
+                            TMPA = <sup>&Sigma; (TempoAtendimento <sub>i</sub>)</sup> &frasl; <sub><em>N</em> (Chamados)</sub>
+                        </div>
+                        <p><strong>Onde:</strong></p>
                         <ul class="definitions-list">
-                            <li><strong>Filtro de Fonte:</strong><br>
-                                <code>WHERE situacao != 'FECHADA' AND tipomanutencao = 'CORRETIVA'</code>
-                            </li>
-                            <li><strong>Cálculo do Tempo:</strong><br>
-                                <code>TempoPendente = DataAtual - abertura (em dias)</code>
-                            </li>
-                            <li><strong>Agrupamento e Classificação:</strong><br>
-                                1. Agrupar por <code>prioridade</code> (Crítico, Semicrítico, Normal).<br>
-                                2. Classificar <code>TempoPendente</code> em faixas: [0-1 dia], [1-7 dias], [>7 dias].
+                            <li><code>TempoAtendimento <sub>i</sub> = data_atendimento <sub>i</sub> - abertura <sub>i</sub></code></li>
+                            <li>A condição para um chamado <sub>i</sub> ser incluído no cálculo é:
+                                <code>situacao != 'FECHADA' AND tipomanutencao = 'CORRETIVA' AND data_atendimento IS NOT NULL</code>
                             </li>
                         </ul>
                     </div>
-                    <div class="strategic-importance"><strong>Desenvolvimento:</strong> Painel de controle com priorização automática, notificações push para gestores, drill-down por equipamento.</div>
+                    <div class="strategic-importance"><strong>Desenvolvimento:</strong> Linha do tempo mostrando evolução média ao longo do tempo.</div>
                 </li>
 
                 
@@ -804,6 +800,7 @@
 
 </body>
 </html>
+
 
 
 
