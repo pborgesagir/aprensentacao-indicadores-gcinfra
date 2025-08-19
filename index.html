@@ -333,7 +333,7 @@
                 <li class="indicator-item">
                     <div class="indicator-name">3. Tempo Médio de Primeiro Atendimento</div>
                     <div class="indicator-description">
-                        <strong>Colunas:</strong> situacao, tipomanutencao, abertura, data_atendimento, prioridade
+                        <strong>Colunas:</strong> situacao, tipomanutencao, data_chamado, data_atendimento, prioridade
                     </div>
                     <div class="calculation-box">
                         <div class="formula-main">
@@ -341,7 +341,7 @@
                         </div>
                         <p><strong>Onde:</strong></p>
                         <ul class="definitions-list">
-                            <li><code>TempoAtendimento <sub>i</sub> = data_atendimento <sub>i</sub> - abertura <sub>i</sub></code></li>
+                            <li><code>TempoAtendimento <sub>i</sub> = data_atendimento <sub>i</sub> - data_chamado <sub>i</sub></code></li>
                             <li>A condição para um chamado <sub>i</sub> ser incluído no cálculo é:
                                 <code>situacao != 'FECHADA' AND tipomanutencao = 'CORRETIVA' AND data_atendimento IS NOT NULL</code>
                             </li>
@@ -800,6 +800,7 @@
 
 </body>
 </html>
+
 
 
 
