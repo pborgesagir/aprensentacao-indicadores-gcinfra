@@ -306,17 +306,27 @@
                             <li><code>HorasParadas = &Sigma; (fechamento - abertura) | tipomanutencao = 'CORRETIVA'</code></li>
                         </ul>
                     </div>
-                    <div class="strategic-importance"><strong>Desenvolvimento:</strong> Integração com sistema de manutenção, alertas automáticos para disponibilidade <98%, segmentação por criticidade.</div>
+                    <div class="strategic-importance"><strong>Ideias de Desenvolvimento:</strong> Integração com sistema de manutenção, alertas automáticos para disponibilidade <98%, segmentação por criticidade.</div>
                 </li>
 
                 <li class="indicator-item">
                     <div class="indicator-name">2. Tempo Médio de Primeiro Atendimento - Equipamentos Críticos</div>
-                    <div class="indicator-description"><strong>Memorial de Cálculo:</strong> 
-                    Filtrar registros onde prioridade = 'ALTA' e data_atendimento IS NOT NULL:<br>
-                    • Tempo Atendimento = data_atendimento - abertura (em horas)<br>
-                    • TMPA = Soma(Tempos de Atendimento) / Count(Chamados Críticos)<br>
-                    <strong>Colunas:</strong> prioridade, data_atendimento, abertura</div>
-                    <div class="strategic-importance"><strong>Desenvolvimento:</strong> Dashboard com semáforo (verde <2h, amarelo 2-4h, vermelho >4h), histórico por período e comparativo por família de equipamentos.</div>
+                    <div class="indicator-description">
+                        <strong>Colunas:</strong> prioridade, data_atendimento, abertura
+                    </div>
+                    <div class="calculation-box">
+                        <div class="formula-main">
+                            TMPA = <sup>&Sigma; (TempoAtendimento <sub>i</sub>)</sup> &frasl; <sub><em>N</em> (Chamados Críticos)</sub>
+                        </div>
+                        <p><strong>Onde:</strong></p>
+                        <ul class="definitions-list">
+                            <li><code>TempoAtendimento <sub>i</sub> = data_atendimento <sub>i</sub> - abertura <sub>i</sub></code></li>
+                            <li>A condição para um chamado <sub>i</sub> ser incluído no cálculo é:
+                                <code>prioridade = 'ALTA' AND data_atendimento IS NOT NULL AND tipomanutencao = 'CORRETIVA'</code>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="strategic-importance"><strong>Ideias de Desenvolvimento:</strong> Dashboard com semáforo (verde <2h, amarelo 2-4h, vermelho >4h), histórico por período e comparativo por família de equipamentos.</div>
                 </li>
 
                 <li class="indicator-item">
@@ -778,6 +788,7 @@
 
 </body>
 </html>
+
 
 
 
